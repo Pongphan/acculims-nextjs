@@ -11,7 +11,8 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 const { TextArea } = Input;
-const CancelComponent = (props_reject) => {
+const CancelComponent = (props) => {
+  const { rejectForm, data } = props;
   const [reasonCheck, setReasonCheck] = useState(null);
   const [reasonOther, setReasonOther] = useState(null);
   const [solution, setSolution] = useState(null);
@@ -40,7 +41,7 @@ const CancelComponent = (props_reject) => {
 
   useEffect(() => {
     const sendData = () => {
-      props_reject.rejectForm({
+      rejectForm({
         reasonCheck: reasonCheck,
         reasonOther: reasonOther,
         solution: solution,
@@ -55,16 +56,16 @@ const CancelComponent = (props_reject) => {
     <>
       <Row>
         <Col span={12}>
-          <b>เลขที่สั่ง :</b> {props_reject.data[0]["order_number"]}
+          <b>เลขที่สั่ง :</b> {data[0]["order_number"]}
         </Col>
         <Col span={12}>
-          <b>LAB :</b> {props_reject.data[0]["form_name"]}
+          <b>LAB :</b> {data[0]["form_name"]}
         </Col>
         <Col span={12}>
-          <b>HN :</b> {props_reject.data[0]["HN"]}
+          <b>HN :</b> {data[0]["HN"]}
         </Col>
         <Col span={12}>
-          <b>ชื่อ-สกุล :</b> {props_reject.data[0]["patient_name"]}
+          <b>ชื่อ-สกุล :</b> {data[0]["patient_name"]}
         </Col>
       </Row>
       <Divider orientation="left">แบบฟอร์มยืนยันปฎิเสธสิ่งส่งตรวจ</Divider>

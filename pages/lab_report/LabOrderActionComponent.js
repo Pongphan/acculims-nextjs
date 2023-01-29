@@ -24,9 +24,12 @@ const LabOrderActionComponent = (props) => {
   const inputFormPrint = (event) => {
     formPrint(event.target.checked);
   };
+  const actionFormReturn = () => {
+    return getFormData(formCode, formComment, formRerun, formLab, formPrint);
+  };
 
   useEffect(() => {
-    getFormData(formCode, formComment, formRerun, formLab, formPrint);
+    actionFormReturn();
   }, [formCode, formComment, formRerun, formLab, formPrint]);
 
   return (

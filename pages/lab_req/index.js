@@ -324,6 +324,7 @@ function LabReq() {
     sInput,
     sWorkType,
     sDepart,
+    sWork,
     sAddress,
   ]);
 

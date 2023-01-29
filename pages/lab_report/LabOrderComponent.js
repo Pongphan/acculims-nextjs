@@ -76,7 +76,7 @@ const LabOrderComponent = (props) => {
             {dataGraphItem.map((itemGraph) => {
               if (itemGraph["value"] !== null) {
                 return (
-                  <tr>
+                  <tr key={itemGraph["value"]}>
                     <td style={{ border: "1px solid #f0f0f0" }}>
                       {itemGraph["label"]}
                     </td>
@@ -160,7 +160,7 @@ const LabOrderComponent = (props) => {
   };
 
   return (
-    <>
+    <div>
       <table
         style={{
           display: "block",
@@ -308,10 +308,7 @@ const LabOrderComponent = (props) => {
                 ) {
                   if (data[index].sub_code !== null) {
                     text = (
-                      <tr
-                        data-row-key={item["lab_items_sub_group_name"]}
-                        style={{ borderTop: "1px solid #f0f0f0" }}
-                      >
+                      <tr style={{ borderTop: "1px solid #f0f0f0" }}>
                         <td style={{ padding: "8px 8px" }} colSpan={11}>
                           {item["lab_items_sub_group_name"]}
                         </td>
@@ -325,9 +322,9 @@ const LabOrderComponent = (props) => {
                 }
 
                 return (
-                  <>
+                  <div key={index}>
                     {text}
-                    <tr data-row-key={index}>
+                    <tr>
                       <td
                         style={{
                           padding: "8px 8px",
@@ -414,8 +411,9 @@ const LabOrderComponent = (props) => {
                             item["lab_order_number"] + item["lab_items_code"]
                           }
                           checked={
-                            checkRerun && !!item["lab_order_result_rerun"]
+                            checkRerun || !!item["lab_order_result_rerun"]
                           }
+                          onChange={warningModalBox}
                         />
                       </td>
                       <td style={{ border: "1px solid #f0f0f0" }}>
@@ -450,12 +448,12 @@ const LabOrderComponent = (props) => {
                         </TT>
                       </td>
                     </tr>
-                  </>
+                  </div>
                 );
               }
             })
           ) : (
-            <tr>
+            <tr key={"55555"}>
               <td colSpan={11}>
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               </td>
@@ -463,7 +461,7 @@ const LabOrderComponent = (props) => {
           )}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

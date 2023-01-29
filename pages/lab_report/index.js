@@ -411,11 +411,11 @@ function LabReport() {
         multiple: 1,
       },
     },
-    {
-      title: "P",
-      dataIndex: "h_status",
-      key: "h_status",
-    },
+    // {
+    //   title: "P",
+    //   dataIndex: "h_status",
+    //   key: "h_status",
+    // },
     {
       title: "Status",
       dataIndex: "h_status",
