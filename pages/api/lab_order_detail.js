@@ -5,6 +5,7 @@ const connection = mysql.createConnection({
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
+  multipleStatements: true,
 });
 
 connection.connect(function (err) {
@@ -17,7 +18,6 @@ connection.connect(function (err) {
 
 export default function handler(req, res) {
   let lab_head;
-  let lab_order;
   const id = req.body.id;
   const query = `SELECT lab_head.department as department, 
   lab_head.lab_order_number as lab_order_number, 
@@ -66,13 +66,33 @@ export default function handler(req, res) {
   WHERE lab_head.lab_order_number = '${id}' 
   GROUP BY lab_head.lab_order_number`;
 
-  const query_item = `SELECT lab_order.specimen_code,
+  let query_item = `SELECT lab_order.lab_order_number,lab_order.specimen_code,
   lab_specimen_items.specimen_name
   FROM lab_order 
   LEFT JOIN lab_specimen_items ON lab_order.specimen_code = lab_specimen_items.specimen_code 
   WHERE lab_order.lab_order_number = '${id}' 
   AND lab_order.specimen_code <> '' 
-  AND lab_specimen_items.specimen_name <> '' `;
+  AND lab_specimen_items.specimen_name <> '' 
+  GROUP BY lab_specimen_items.specimen_name;`;
+
+  query_item =
+    query_item +
+    `SELECT lab_order.lab_order_number,lab_items_sub_group.lab_items_sub_group_name as lab_profile
+  FROM lab_order 
+  LEFT JOIN lab_items_sub_group ON lab_order.lab_items_sub_group_code = lab_items_sub_group.lab_items_sub_group_code 
+  WHERE lab_order.lab_order_number = '${id}' 
+  AND lab_order.lab_items_sub_group_code <> ''
+  GROUP BY lab_order.lab_items_sub_group_code ;`;
+
+  query_item =
+    query_item +
+    `SELECT lab_order.lab_order_number,lab_items.lab_items_group,lab_items_group.lab_items_group_name
+  FROM lab_order
+  LEFT JOIN lab_items ON lab_order.lab_items_code = lab_items.lab_items_code
+  LEFT JOIN lab_items_group ON lab_items.lab_items_group = lab_items_group.lab_items_group_code
+  WHERE lab_order.lab_order_number = '${id}'
+  AND lab_order.lab_items_code <> '' 
+  GROUP BY lab_items.lab_items_group;`;
 
   connection.query(query, function (err, rows, fields) {
     if (err) {
@@ -85,8 +105,12 @@ export default function handler(req, res) {
         console.error(err2);
         return;
       }
-      lab_order = rows2;
-      res.status(200).json({ lab_head: lab_head, lab_order: lab_order });
+      res.status(200).json({
+        lab_head: lab_head,
+        lab_order: rows2[0],
+        lab_profile: rows2[1],
+        lab_single: rows2[2],
+      });
     });
   });
 }

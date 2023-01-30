@@ -80,6 +80,7 @@ export default function handler(req, res) {
   lab_head.department as department,
   lab_head.receive_status, 
   lab_head.report_status, 
+  lab_head.partial_status AS p, 
   patient.informaddr as address
   FROM lab_head
   LEFT JOIN lab_order ON lab_order.lab_order_number = lab_head.lab_order_number 

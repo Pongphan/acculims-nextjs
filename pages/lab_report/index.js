@@ -17,6 +17,7 @@ import {
   Spin,
   message,
   Modal,
+  Empty,
 } from "antd";
 import {
   DiffOutlined,
@@ -242,19 +243,33 @@ function LabReport() {
   };
 
   const showDetail = (data) => {
-    setDetail(<DetailComponent data={data.lab_head[0]} />);
+    setDetail(
+      !!data.lab_head[0]["department"] ? (
+        <DetailComponent data={data.lab_head[0]} />
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )
+    );
     setDetailNote(
-      <DetailNoteComponent
-        data={data.lab_head[0]}
-        api={API_post_note}
-        summitNote={summitNote}
-      />
+      !!data.lab_head[0] ? (
+        <DetailNoteComponent
+          data={!!data.lab_head[0] ? data.lab_head[0] : ""}
+          api={API_post_note}
+          summitNote={summitNote}
+        />
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )
     );
     setLoadingData(false);
   };
 
   const setStatusListonClick = (id) => {
     setStatusList(id);
+    setSelectedRadioKeys([]);
+    setDataReport([]);
+    setDetail(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />);
+    setDetailNote(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />);
   };
 
   const inputSType = (event) => {
@@ -284,7 +299,8 @@ function LabReport() {
 
   useEffect(() => {
     const loadData = async () => {
-      setDetail(null);
+      setDetail(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />);
+      setDetailNote(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />);
       setDataReport([]);
       setLoading(true);
       setDataReportStatus(null);
@@ -406,16 +422,15 @@ function LabReport() {
       title: "เลขที่สั่ง",
       dataIndex: "order_number",
       key: "order_number",
-      sorter: {
-        compare: (a, b) => a.order_number - b.order_number,
-        multiple: 1,
-      },
+      width: 80,
     },
-    // {
-    //   title: "P",
-    //   dataIndex: "h_status",
-    //   key: "h_status",
-    // },
+    {
+      title: "P",
+      dataIndex: "p",
+      key: "p",
+      render: (text) => <b style={{ color: "red" }}>{text}</b>,
+      width: 30,
+    },
     {
       title: "Status",
       dataIndex: "h_status",
@@ -770,7 +785,7 @@ function LabReport() {
                   <Row>
                     <Col span={24}>
                       <LabOrderComponent
-                        data={dataReport}
+                        data={!!dataReport ? dataReport : null}
                         key={dataReport["lab_items_code"]}
                         id={dataReport["lab_items_code"]}
                         formDisable={formDisable}

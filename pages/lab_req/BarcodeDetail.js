@@ -4,7 +4,7 @@ import { Col, Row } from "antd";
 
 const BarcodeDetail = (props) => {
   const { element, seperate, lab_items_name } = props;
-  return (
+  return !!element ? (
     <Row
       style={{
         width: 566,
@@ -34,6 +34,8 @@ const BarcodeDetail = (props) => {
         </p>
       </Col>
     </Row>
+  ) : (
+    <></>
   );
 };
 

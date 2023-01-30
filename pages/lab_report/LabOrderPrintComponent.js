@@ -9,7 +9,7 @@ const LabOrderPrintComponent = (props) => {
     setDataList(data);
   }, [data]);
 
-  return (
+  return detail ? (
     <>
       <table
         style={{
@@ -222,6 +222,8 @@ const LabOrderPrintComponent = (props) => {
         </tbody>
       </table>
     </>
+  ) : (
+    <></>
   );
 };
 

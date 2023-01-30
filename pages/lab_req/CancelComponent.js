@@ -61,7 +61,7 @@ const CancelComponent = (props_reject) => {
     solution,
     props_reject,
   ]);
-  return (
+  return !!data ? (
     <>
       <Row>
         <Col span={12}>
@@ -183,6 +183,8 @@ const CancelComponent = (props_reject) => {
         </Row>
       </Form>
     </>
+  ) : (
+    <></>
   );
 };
 

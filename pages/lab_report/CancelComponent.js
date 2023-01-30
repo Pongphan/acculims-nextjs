@@ -52,7 +52,7 @@ const CancelComponent = (props) => {
     };
     sendData();
   }, [reasonCheck, reasonOther, time, approver, approved, solution]);
-  return (
+  return !!data ? (
     <>
       <Row>
         <Col span={12}>
@@ -200,6 +200,8 @@ const CancelComponent = (props) => {
         </Row>
       </Form>
     </>
+  ) : (
+    <></>
   );
 };
 

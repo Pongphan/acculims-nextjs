@@ -4,12 +4,12 @@ import { Input } from "antd";
 const { TextArea } = Input;
 const DetailNoteComponent = (props) => {
   const { data, api, summitNote } = props;
-  const [note, setNote] = useState(data["order_note"]);
+  const [note, setNote] = useState("");
   const inputNote = (event) => {
     setNote(event.target.value);
   };
   useEffect(() => {
-    setNote(data["order_note"]);
+    setNote(!!data ? data["order_note"] : "");
   }, [data]);
   const commitNote = (event) => {
     summitNote(data["lab_order_number"], note);

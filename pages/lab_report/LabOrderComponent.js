@@ -268,196 +268,204 @@ const LabOrderComponent = (props) => {
           </tr>
         </thead>
         <tbody className={"ant-row-design"}>
-          {data.length > 0 ? (
-            data.map((item, index) => {
-              if (
-                dataItemGroupSelect === "All" ||
-                dataItemGroupSelect === item["group_code"]
-              ) {
-                let text;
-                let arrayHistory;
-                if (!!item["history"]) {
-                  arrayHistory = replaceHistory(item["history"]);
-                } else {
-                  arrayHistory = [
-                    {
-                      value: data["lab_order_result"],
-                      label: data["order_date_time"],
-                    },
-                    {
-                      value: null,
-                      label: null,
-                    },
-                    {
-                      value: null,
-                      label: null,
-                    },
-                    {
-                      value: null,
-                      label: null,
-                    },
-                    {
-                      value: null,
-                      label: null,
-                    },
-                  ];
-                }
+          {!!data ? (
+            data.length > 0 ? (
+              data.map((item, index) => {
                 if (
-                  index === 0 ||
-                  data[index].sub_code !== data[index - 1].sub_code
+                  dataItemGroupSelect === "All" ||
+                  dataItemGroupSelect === item["group_code"]
                 ) {
-                  if (data[index].sub_code !== null) {
-                    text = (
-                      <tr style={{ borderTop: "1px solid #f0f0f0" }}>
-                        <td style={{ padding: "8px 8px" }} colSpan={11}>
-                          {item["lab_items_sub_group_name"]}
-                        </td>
-                      </tr>
-                    );
+                  let text;
+                  let arrayHistory;
+                  if (!!item["history"]) {
+                    arrayHistory = replaceHistory(item["history"]);
+                  } else {
+                    arrayHistory = [
+                      {
+                        value: data["lab_order_result"],
+                        label: data["order_date_time"],
+                      },
+                      {
+                        value: null,
+                        label: null,
+                      },
+                      {
+                        value: null,
+                        label: null,
+                      },
+                      {
+                        value: null,
+                        label: null,
+                      },
+                      {
+                        value: null,
+                        label: null,
+                      },
+                    ];
+                  }
+                  if (
+                    index === 0 ||
+                    data[index].sub_code !== data[index - 1].sub_code
+                  ) {
+                    if (data[index].sub_code !== null) {
+                      text = (
+                        <tr style={{ borderTop: "1px solid #f0f0f0" }}>
+                          <td style={{ padding: "8px 8px" }} colSpan={11}>
+                            {item["lab_items_sub_group_name"]}
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      text = null;
+                    }
                   } else {
                     text = null;
                   }
-                } else {
-                  text = null;
-                }
 
-                return (
-                  <div key={index}>
-                    {text}
-                    <tr>
-                      <td
-                        style={{
-                          padding: "8px 8px",
-                          border: "1px solid #f0f0f0",
-                          cursor: "pointer",
-                        }}
-                        onMouseOver={() => {
-                          openGraph(
-                            item["lab_items_name"],
-                            [
-                              {
-                                value: item["lab_order_result_manual"]
-                                  ? item["lab_order_result_manual"]
-                                  : item["lab_order_result_instrument"],
-                                label: item["order_date_time"],
-                              },
-                              ...arrayHistory,
-                            ],
-                            isNaN(item["lab_order_result_manual"]) ||
-                              isNaN(item["lab_order_result_instrument"]) ||
-                              isNaN(arrayHistory[0]["value"]) ||
-                              isNaN(arrayHistory[1]["value"]) ||
-                              isNaN(arrayHistory[2]["value"]) ||
-                              isNaN(arrayHistory[3]["value"]) ||
-                              isNaN(arrayHistory[4]["value"])
-                          );
-                        }}
-                      >
-                        <Popover
-                          placement="leftTop"
-                          content={information}
-                          title={titleInformation}
+                  return (
+                    <>
+                      {text}
+                      <tr>
+                        <td
+                          style={{
+                            padding: "8px 8px",
+                            border: "1px solid #f0f0f0",
+                            cursor: "pointer",
+                          }}
+                          onMouseOver={() => {
+                            openGraph(
+                              item["lab_items_name"],
+                              [
+                                {
+                                  value: item["lab_order_result_manual"]
+                                    ? item["lab_order_result_manual"]
+                                    : item["lab_order_result_instrument"],
+                                  label: item["order_date_time"],
+                                },
+                                ...arrayHistory,
+                              ],
+                              isNaN(item["lab_order_result_manual"]) ||
+                                isNaN(item["lab_order_result_instrument"]) ||
+                                isNaN(arrayHistory[0]["value"]) ||
+                                isNaN(arrayHistory[1]["value"]) ||
+                                isNaN(arrayHistory[2]["value"]) ||
+                                isNaN(arrayHistory[3]["value"]) ||
+                                isNaN(arrayHistory[4]["value"])
+                            );
+                          }}
                         >
-                          {item["lab_items_sub_group_name"] !== null ? (
-                            <div style={{ width: "100%", paddingLeft: "15px" }}>
-                              {item["lab_items_name"]}
-                            </div>
+                          <Popover
+                            placement="leftTop"
+                            content={information}
+                            title={titleInformation}
+                          >
+                            {item["lab_items_sub_group_name"] !== null ? (
+                              <div
+                                style={{ width: "100%", paddingLeft: "15px" }}
+                              >
+                                {item["lab_items_name"]}
+                              </div>
+                            ) : (
+                              <div style={{ width: "100%" }}>
+                                {item["lab_items_name"]}
+                              </div>
+                            )}
+                          </Popover>
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          {item["lab_order_result_instrument"]}
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <Input
+                            defaultValue={item["lab_order_result_manual"]}
+                            onChange={changeInput_lab_order_result_manual}
+                            id={item["lab_items_code"]}
+                            key={
+                              item["lab_order_number"] + item["lab_items_code"]
+                            }
+                            disabled={formDisable}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            textAlign: "center",
+                            border: "1px solid #f0f0f0",
+                          }}
+                        >
+                          {item["flag"] === "H" ? (
+                            <b style={{ color: "red" }}>{item["flag"]}</b>
+                          ) : item["flag"] === "L" ? (
+                            <b style={{ color: "blue" }}>{item["flag"]}</b>
                           ) : (
-                            <div style={{ width: "100%" }}>
-                              {item["lab_items_name"]}
-                            </div>
+                            <>{item["flag"]}</>
                           )}
-                        </Popover>
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        {item["lab_order_result_instrument"]}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <Input
-                          defaultValue={item["lab_order_result_manual"]}
-                          onChange={changeInput_lab_order_result_manual}
-                          id={item["lab_items_code"]}
-                          key={
-                            item["lab_order_number"] + item["lab_items_code"]
-                          }
-                          disabled={formDisable}
-                        />
-                      </td>
-                      <td
-                        style={{
-                          textAlign: "center",
-                          border: "1px solid #f0f0f0",
-                        }}
-                      >
-                        {item["flag"] === "H" ? (
-                          <b style={{ color: "red" }}>{item["flag"]}</b>
-                        ) : item["flag"] === "L" ? (
-                          <b style={{ color: "blue" }}>{item["flag"]}</b>
-                        ) : (
-                          <>{item["flag"]}</>
-                        )}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0", color: "red" }}>
-                        {item["lab_order_result_rerun"] ? (
-                          <WarningOutlined onClick={warningModalBox} />
-                        ) : null}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        {item["lab_order_result_rerun"]}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <Checkbox
-                          key={
-                            item["lab_order_number"] + item["lab_items_code"]
-                          }
-                          checked={
-                            checkRerun || !!item["lab_order_result_rerun"]
-                          }
-                          onChange={warningModalBox}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        {item["lab_items_unit"]}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        {item["lab_items_normal_value"]}
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <TT title={arrayHistory[0]["label"]}>
-                          {arrayHistory[0]["value"]}
-                        </TT>
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <TT title={arrayHistory[1]["label"]}>
-                          {arrayHistory[1]["value"]}
-                        </TT>
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <TT title={arrayHistory[2]["label"]}>
-                          {arrayHistory[2]["value"]}
-                        </TT>
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <TT title={arrayHistory[3]["label"]}>
-                          {arrayHistory[3]["value"]}
-                        </TT>
-                      </td>
-                      <td style={{ border: "1px solid #f0f0f0" }}>
-                        <TT title={arrayHistory[4]["label"]}>
-                          {arrayHistory[4]["value"]}
-                        </TT>
-                      </td>
-                    </tr>
-                  </div>
-                );
-              }
-            })
+                        </td>
+                        <td
+                          style={{ border: "1px solid #f0f0f0", color: "red" }}
+                        >
+                          {item["lab_order_result_rerun"] ? (
+                            <WarningOutlined onClick={warningModalBox} />
+                          ) : null}
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          {item["lab_order_result_rerun"]}
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <Checkbox
+                            key={
+                              item["lab_order_number"] + item["lab_items_code"]
+                            }
+                            checked={
+                              checkRerun || !!item["lab_order_result_rerun"]
+                            }
+                            onChange={warningModalBox}
+                          />
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          {item["lab_items_unit"]}
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          {item["lab_items_normal_value"]}
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <TT title={arrayHistory[0]["label"]}>
+                            {arrayHistory[0]["value"]}
+                          </TT>
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <TT title={arrayHistory[1]["label"]}>
+                            {arrayHistory[1]["value"]}
+                          </TT>
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <TT title={arrayHistory[2]["label"]}>
+                            {arrayHistory[2]["value"]}
+                          </TT>
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <TT title={arrayHistory[3]["label"]}>
+                            {arrayHistory[3]["value"]}
+                          </TT>
+                        </td>
+                        <td style={{ border: "1px solid #f0f0f0" }}>
+                          <TT title={arrayHistory[4]["label"]}>
+                            {arrayHistory[4]["value"]}
+                          </TT>
+                        </td>
+                      </tr>
+                    </>
+                  );
+                }
+              })
+            ) : (
+              <tr key={"55555"}>
+                <td colSpan={11}>
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                </td>
+              </tr>
+            )
           ) : (
-            <tr key={"55555"}>
-              <td colSpan={11}>
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              </td>
-            </tr>
+            <></>
           )}
         </tbody>
       </table>
