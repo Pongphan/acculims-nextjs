@@ -36,7 +36,7 @@ import LabOrderComponent from "./LabOrderComponent";
 import LabOrderPrintComponent from "./LabOrderPrintComponent";
 import LabOrderActionComponent from "./LabOrderActionComponent";
 
-const API_server = "http://localhost:3000";
+const API_server = "";
 const API_post_list = API_server + "/api/lab_report";
 const API_post_detail = API_server + "/api/lab_order_detail";
 

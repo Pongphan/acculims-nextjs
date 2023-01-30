@@ -36,7 +36,7 @@ import DetailThingComponent from "./DetailThingComponent";
 import BarcodeComponent from "./BarcodeComponent";
 import CancelComponent from "./CancelComponent";
 
-const API_server = "http://localhost:3000";
+const API_server = "";
 const API_post_list = API_server + "/api/lab_order";
 const API_post_detail = API_server + "/api/lab_order_detail";
 
@@ -44,6 +44,7 @@ const API_post_barcode = API_server + "/api/lab_barcode";
 const API_get_lab_form_head = API_server + "/api/get_lab_form_head";
 const API_get_lab_items_group = API_server + "/api/get_lab_items_group";
 const API_get_doctor = API_server + "/api/get_doctor";
+const API_lis_user = API_server + "/api/get_lis_user";
 
 const API_post_action = API_server + "/api/lab_order_action_event";
 const API_post_cancel_reason = API_server + "/api/lab_order_reject";
@@ -68,7 +69,7 @@ function LabReq() {
   };
 
   const getDoctor = (action) => {
-    return axios.get(API_get_doctor).then(function (responseDoctor) {
+    return axios.get(API_lis_user).then(function (responseDoctor) {
       return axios
         .post(API_post_detail, {
           id: selectedRowKeys.join(),
